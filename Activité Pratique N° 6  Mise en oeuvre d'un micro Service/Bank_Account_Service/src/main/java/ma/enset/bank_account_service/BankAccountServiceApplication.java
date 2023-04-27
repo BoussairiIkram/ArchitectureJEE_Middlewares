@@ -1,5 +1,6 @@
 package ma.enset.bank_account_service;
 
+import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
 import ma.enset.bank_account_service.entities.AccountType;
 import ma.enset.bank_account_service.entities.BankAccount;
@@ -34,4 +35,5 @@ public class BankAccountServiceApplication implements CommandLineRunner {
             bankAccountRepository.save(bankAccount);
         }
     }
+
 }

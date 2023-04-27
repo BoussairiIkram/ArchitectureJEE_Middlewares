@@ -1,18 +1,23 @@
 package ma.enset.bank_account_service.Web.controllers;
 
 import lombok.AllArgsConstructor;
+import ma.enset.bank_account_service.dto.requests.BankAccountRequestDTO;
+import ma.enset.bank_account_service.dto.responses.BankAccountResponseDTO;
 import ma.enset.bank_account_service.entities.BankAccount;
 import ma.enset.bank_account_service.repositories.BankAccountRepository;
+import ma.enset.bank_account_service.services.BankAccountService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
 
 @RestController
+@RequestMapping("/api")
 @AllArgsConstructor
 public class AccountRestController {
 
-    BankAccountRepository bankAccountRepository;
+    private BankAccountRepository bankAccountRepository;
+    private BankAccountService bankAccountService;
 
     @GetMapping("/bankAccounts")
     public List<BankAccount> bankAccounts(){
@@ -27,9 +32,8 @@ public class AccountRestController {
     }
 
     @PostMapping("/bankAccounts")
-    public BankAccount saveAccount(@RequestBody BankAccount bankAccount){
-        if(bankAccount.getId()==null) bankAccount.setId(UUID.randomUUID().toString());
-        return bankAccountRepository.save(bankAccount);
+    public BankAccountResponseDTO saveAccount(@RequestBody BankAccountRequestDTO bankAccount){
+        return bankAccountService.addAccount(bankAccount);
     }
 
     @PostMapping("/bankAccounts/{id}")
