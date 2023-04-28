@@ -1,4 +1,4 @@
-package ma.enset.bank_account_service.Web.controllers;
+package ma.enset.bank_account_service.Web.controllers.RESTControllers;
 
 import lombok.AllArgsConstructor;
 import ma.enset.bank_account_service.dto.requests.BankAccountRequestDTO;

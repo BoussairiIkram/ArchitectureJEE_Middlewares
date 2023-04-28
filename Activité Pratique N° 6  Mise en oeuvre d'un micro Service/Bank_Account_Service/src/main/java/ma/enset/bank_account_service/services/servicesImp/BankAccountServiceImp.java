@@ -7,6 +7,7 @@ import ma.enset.bank_account_service.entities.BankAccount;
 import ma.enset.bank_account_service.mappers.AccountMapper;
 import ma.enset.bank_account_service.repositories.BankAccountRepository;
 import ma.enset.bank_account_service.services.BankAccountService;
+import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,4 +45,22 @@ public class BankAccountServiceImp implements BankAccountService {
 
         return bankAccountResponseDTO;
     }
+
+    @Override
+    public BankAccountResponseDTO updateBankAccount(@Argument BankAccountRequestDTO bankAccountRequestDTO, @Argument String id){
+        BankAccount bankAccount = BankAccount.builder()
+                .id(id)
+                .createAt(new Date())
+                .balance(bankAccountRequestDTO.getBalance())
+                .currency(bankAccountRequestDTO.getCurrency())
+                .accountType(bankAccountRequestDTO.getAccountType())
+                .build();
+
+        BankAccount saveAccount= bankAccountRepository.save(bankAccount);
+
+        BankAccountResponseDTO bankAccountResponseDTO = accountMapper.fromBankAccount(saveAccount);
+
+        return bankAccountResponseDTO;
+    }
+
 }
