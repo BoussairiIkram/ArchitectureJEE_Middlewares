@@ -42,7 +42,7 @@ public class AccountGraphQLController {
 
     @MutationMapping
     public BankAccountResponseDTO updateAccount(@Argument String id,@Argument BankAccountRequestDTO bankAccountRequestDTO) {
-        return bankAccountService.updateBankAccount(bankAccountRequestDTO, id);
+        return bankAccountService.updateBankAccount(id, bankAccountRequestDTO);
     }
 
     @MutationMapping

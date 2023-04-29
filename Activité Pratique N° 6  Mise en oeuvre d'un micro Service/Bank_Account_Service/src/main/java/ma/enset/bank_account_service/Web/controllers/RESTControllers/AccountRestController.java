@@ -15,43 +15,32 @@ import java.util.UUID;
 @RequestMapping("/api")
 @AllArgsConstructor
 public class AccountRestController {
-
-    private BankAccountRepository bankAccountRepository;
     private BankAccountService bankAccountService;
 
     @GetMapping("/bankAccounts")
-    public List<BankAccount> bankAccounts(){
-        return bankAccountRepository.findAll();
+    public List<BankAccountResponseDTO> bankAccounts(){
+        return bankAccountService.getAccounts();
     }
 
     @GetMapping("/bankAccounts/{id}")
-    public BankAccount bankAccount(@PathVariable String id){
-        return bankAccountRepository.findById(id).orElseThrow(
-                () -> new RuntimeException(String.format("Account %S NOT FOUND",id))
-        );
+    public BankAccountResponseDTO bankAccount(@PathVariable String id){
+        return bankAccountService.getAccount(id);
     }
 
     @PostMapping("/bankAccounts")
     public BankAccountResponseDTO saveAccount(@RequestBody BankAccountRequestDTO bankAccount){
-        return bankAccountService.addAccount(bankAccount);
+        BankAccountResponseDTO bankAccountResponseDTO = bankAccountService.addAccount(bankAccount);
+        return bankAccountResponseDTO;
     }
 
     @PostMapping("/bankAccounts/{id}")
-    public BankAccount updateAccount(@PathVariable String id,@RequestBody BankAccount bankAccount){
-        BankAccount account = bankAccountRepository.findById(id).orElseThrow();
-        if(account!=null && bankAccount!=null ){
-            if(bankAccount.getBalance()!=null) account.setBalance(bankAccount.getBalance());
-            if(bankAccount.getCurrency()!=null) account.setCurrency(bankAccount.getCurrency());
-            if(bankAccount.getAccountType()!=null) account.setAccountType(bankAccount.getAccountType());
-            if(bankAccount.getCreateAt()!=null) account.setCreateAt(bankAccount.getCreateAt());
-            bankAccountRepository.save(account);
-        }
-        return bankAccountRepository.save(account);
+    public BankAccountResponseDTO updateAccount(@PathVariable String id,@RequestBody BankAccountRequestDTO bankAccountRequestDTO){
+        return bankAccountService.updateBankAccount(id,bankAccountRequestDTO);
     }
 
     @DeleteMapping("/bankAccounts/{id}")
     public void deleteAccount(@PathVariable String id){
-        bankAccountRepository.deleteById(id);
+        bankAccountService.deleteAccount(id);
     }
 
 }
